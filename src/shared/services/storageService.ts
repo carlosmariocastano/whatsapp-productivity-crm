@@ -1,7 +1,9 @@
 export class StorageService {
+
   static async get<T>(
     key: string
   ): Promise<T | null> {
+
     const result =
       await chrome.storage.local.get(
         key
@@ -14,16 +16,22 @@ export class StorageService {
     key: string,
     value: unknown
   ) {
+
     await chrome.storage.local.set({
-      value,
+      value
     });
+
   }
 
   static async remove(
     key: string
   ) {
+
     await chrome.storage.local.remove(
       key
     );
+
   }
+
 }
+``
