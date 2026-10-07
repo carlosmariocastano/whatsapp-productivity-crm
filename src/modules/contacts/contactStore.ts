@@ -9,6 +9,8 @@ interface ContactState {
   addContact: (contact: Contact) => void;
 
   deleteContact: (id: string) => void;
+  
+  addTag: (contactId: string,tag: string) => void;
 }
 
 export const useContactStore =
@@ -32,6 +34,22 @@ export const useContactStore =
                 (c) => c.id !== id
               ),
           })),
+		  
+		addTag: (  contactId,  tag) =>
+		  set((state) => ({
+			contacts:
+			  state.contacts.map((contact) =>
+				contact.id === contactId
+				  ? {
+					  ...contact,
+					  tags: [
+						...contact.tags,
+						tag,
+					  ],
+					}
+				  : contact
+			  ),
+		  })),
       }),
       {
         name: "contacts-storage",

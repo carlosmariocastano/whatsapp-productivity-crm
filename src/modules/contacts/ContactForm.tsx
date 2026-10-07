@@ -4,6 +4,7 @@ import { v4 as uuid } from "uuid";
 import { useContactStore } from "./contactStore";
 
 export default function ContactForm() {
+
   const addContact =
     useContactStore(
       (state) => state.addContact
@@ -15,22 +16,36 @@ export default function ContactForm() {
   const [phone, setPhone] =
     useState("");
 
+  const [company, setCompany] =
+    useState("");
+
+  const [notes, setNotes] =
+    useState("");
+
   const save = () => {
+
+    if (!name || !phone) return;
+
     addContact({
       id: uuid(),
       name,
       phone,
+      company,
+      notes,
       tags: [],
       createdAt:
-        new Date().toISOString(),
+        new Date().toISOString()
     });
 
     setName("");
     setPhone("");
+    setCompany("");
+    setNotes("");
   };
 
   return (
     <div className="flex flex-col gap-2">
+
       <input
         placeholder="Nombre"
         value={name}
@@ -47,9 +62,28 @@ export default function ContactForm() {
         }
       />
 
-      <button onClick={save}>
+      <input
+        placeholder="Empresa"
+        value={company}
+        onChange={(e) =>
+          setCompany(e.target.value)
+        }
+      />
+
+      <textarea
+        placeholder="Notas"
+        value={notes}
+        onChange={(e) =>
+          setNotes(e.target.value)
+        }
+      />
+
+      <button
+        onClick={save}
+      >
         Guardar Contacto
       </button>
+
     </div>
   );
 }
