@@ -6,25 +6,26 @@ export function Sidebar() {
       <h1 className="text-xl font-bold mb-8">
         WhatsCRM
       </h1>
-
       <nav className="flex flex-col gap-4">
         <Link to="/">Dashboard</Link>
-
         <Link to="/templates">
           Templates
         </Link>
-
         <Link to="/contacts">
           Contacts
         </Link>
-
         <Link to="/tasks">
           Tasks
         </Link>
-
+		<Link to="/followups">
+			Follow Ups
+		</Link>
         <Link to="/settings">
           Settings
         </Link>
+		<Link to="/quick-replies">
+			Quick Replies
+		</Link>
       </nav>
     </aside>
   );
