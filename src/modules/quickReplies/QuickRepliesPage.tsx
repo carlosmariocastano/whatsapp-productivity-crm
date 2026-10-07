@@ -1,22 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useTemplateStore } from "../templates/templateStore";
+
 import { findTemplateByShortcut } from "../../shared/utils/templateUtils";
 import { interpolate } from "../../shared/utils/interpolate";
+import { extractVariables } from "../../shared/utils/extractVariables";
 
 export default function QuickRepliesPage() {
   const templates = useTemplateStore(
     (state) => state.templates
   );
 
-  const [contactName, setContactName] =
-    useState("");
-
   const [shortcut, setShortcut] =
     useState("");
 
   const [result, setResult] =
     useState("");
+
+  const [selectedTemplate, setSelectedTemplate] =
+    useState("");
+
+  const [variables, setVariables] =
+    useState<Record<string, string>>(
+      {}
+    );
 
   const generateReply = () => {
     const template =
@@ -26,19 +33,33 @@ export default function QuickRepliesPage() {
       );
 
     if (!template) {
+      setSelectedTemplate("");
       setResult("Template no encontrada");
       return;
     }
 
+    setSelectedTemplate(
+      template.content
+    );
+
+    setVariables({});
+
+    setResult(template.content);
+  };
+
+  useEffect(() => {
+    if (!selectedTemplate) return;
+
     const message = interpolate(
-      template.content,
-      {
-        nombre: contactName,
-      }
+      selectedTemplate,
+      variables
     );
 
     setResult(message);
-  };
+  }, [
+    variables,
+    selectedTemplate,
+  ]);
 
   const copyReply = async () => {
     if (!result) return;
@@ -56,20 +77,6 @@ export default function QuickRepliesPage() {
       <h1 className="text-2xl font-bold">
         Quick Replies
       </h1>
-
-      <input
-        className="
-          border
-          rounded
-          p-2"
-        placeholder="Nombre del contacto"
-        value={contactName}
-        onChange={(e) =>
-          setContactName(
-            e.target.value
-          )
-        }
-      />
 
       <div className="flex gap-2">
 
@@ -101,6 +108,31 @@ export default function QuickRepliesPage() {
 
       </div>
 
+      {selectedTemplate &&
+        extractVariables(
+          selectedTemplate
+        ).map((variable) => (
+
+          <input
+            key={variable}
+            className="
+              border
+              rounded
+              p-2"
+            placeholder={variable}
+            value={
+              variables[variable] || ""
+            }
+            onChange={(e) =>
+				setVariables({
+					...variables,
+					e.target.value,
+				})
+			}
+          />
+
+      ))}
+
       <textarea
         className="
           border
@@ -122,7 +154,4 @@ export default function QuickRepliesPage() {
       >
         Copiar respuesta
       </button>
-
     </div>
-  );
-}
