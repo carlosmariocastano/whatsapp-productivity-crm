@@ -1,57 +1,45 @@
-export function getMessageBox():
-  HTMLElement | null {
-
-  const editors = document.querySelectorAll(
-    '[contenteditable="true"]'
-  );
-
-  for (const editor of editors) {
-
-    const element =
-      editor as HTMLElement;
-
-    if (
-      element.getAttribute(
-        "data-tab"
-      )
-    ) {
-      return element;
-    }
-  }
-
-  return null;
-}
-
-export function insertMessage(
+export function insertTemplate(
+  chatBox: HTMLElement,
   message: string
-): boolean {
+): void {
+  chatBox.focus();
 
-  const editor =
-    getMessageBox();
-
-  if (!editor) {
-    console.warn(
-      "WhatsCRM: Message box not found"
-    );
-
-    return false;
-  }
-
-  editor.focus();
-
-  editor.textContent = message;
-
-  editor.dispatchEvent(
-    new InputEvent(
-      "input",
-      {
-        bubbles: true,
-        cancelable: true,
-        inputType: "insertText",
-        data: message,
-      }
-    )
+  const selectAllEvent = new KeyboardEvent(
+    "keydown",
+    {
+      key: "a",
+      code: "KeyA",
+      ctrlKey: true,
+      bubbles: true
+    }
   );
 
-  return true;
+  chatBox.dispatchEvent(selectAllEvent);
+
+  const backspaceEvent =
+    new KeyboardEvent("keydown", {
+      key: "Backspace",
+      code: "Backspace",
+      bubbles: true
+    });
+
+  chatBox.dispatchEvent(backspaceEvent);
+
+  const dataTransfer = new DataTransfer();
+
+  dataTransfer.setData(
+    "text/plain",
+    message
+  );
+
+  const pasteEvent = new ClipboardEvent(
+    "paste",
+    {
+      clipboardData: dataTransfer,
+      bubbles: true,
+      cancelable: true
+    }
+  );
+
+  chatBox.dispatchEvent(pasteEvent);
 }

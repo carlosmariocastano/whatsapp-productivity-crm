@@ -1,37 +1,25 @@
 export class StorageService {
-
   static async get<T>(
     key: string
   ): Promise<T | null> {
-
     const result =
-      await chrome.storage.local.get(
-        key
-      );
+      await chrome.storage.local.get(key);
 
-    return result[key] ?? null;
+    return (result[key] as T) ?? null;
   }
 
   static async set(
     key: string,
     value: unknown
   ) {
-
     await chrome.storage.local.set({
-      value
+      [key]: value,
     });
-
   }
 
   static async remove(
     key: string
   ) {
-
-    await chrome.storage.local.remove(
-      key
-    );
-
+    await chrome.storage.local.remove(key);
   }
-
 }
-``

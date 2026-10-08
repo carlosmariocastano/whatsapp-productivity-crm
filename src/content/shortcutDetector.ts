@@ -1,47 +1,14 @@
-import {
-  insertMessage,
-} from "./templateInjector";
+export function getMatches(
+  text: string,
+  commands: string[]
+): string[] {
+  if (text === "/") {
+    return commands;
+  }
 
-export function registerShortcutListener() {
-
-  document.addEventListener(
-    "keydown",
-    (event) => {
-
-      if (event.key !== "Tab") {
-        return;
-      }
-
-      const activeElement =
-        document.activeElement;
-
-      if (
-        !activeElement ||
-        !(
-          activeElement instanceof
-          HTMLElement
-        )
-      ) {
-        return;
-      }
-
-      const text =
-        activeElement.textContent ?? "";
-
-      if (
-        text.trim() === "/hola"
-      ) {
-
-        event.preventDefault();
-
-        insertMessage(
-`Hola Carlos
-
-Gracias por contactarnos.`
-        );
-      }
-
-    }
+  return commands.filter(command =>
+    command.toLowerCase().startsWith(
+      text.toLowerCase()
+    )
   );
-
 }

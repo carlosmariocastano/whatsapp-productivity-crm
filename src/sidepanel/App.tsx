@@ -11,7 +11,7 @@ import TemplatesPage from "../modules/templates/TemplatesPage";
 import ContactsPage from "../modules/contacts/ContactsPage";
 import TasksPage from "../modules/tasks/TasksPage";
 import SettingsPage from "../modules/settings/SettingsPage";
-import FollowUpsPage from "../modules/followups/FollowUpsPage";
+import FollowUpsPage from "../modules/followups/followUpsPage";
 import QuickRepliesPage from "../modules/quickReplies/QuickRepliesPage";
 
 export default function App() {

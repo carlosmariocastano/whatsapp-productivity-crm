@@ -1,17 +1,5 @@
-import {
-  registerShortcutListener,
-} from "./shortcutDetector";
-
-function initialize() {
-
-  console.log(
-    "WhatsCRM: WhatsApp detected"
+export function getChatBox(): HTMLElement | null {
+  return document.querySelector(
+    '[data-testid="conversation-compose-box-input"]'
   );
-
-  registerShortcutListener();
 }
-
-window.addEventListener(
-  "load",
-  initialize
-);
